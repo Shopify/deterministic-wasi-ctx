@@ -14,6 +14,9 @@ build-deterministic-wasi-ctx:
 build-deterministic-wasi-ctx-test-programs:
 	cargo build --package deterministic-wasi-ctx-test-programs --target wasm32-wasi
 
+crate-checks:
+	cargo install --locked --version ~0.12 cargo-deny && cargo deny check
+
 deterministic-wasi-ctx:
 	cargo $(CMD) --package deterministic-wasi-ctx
 
