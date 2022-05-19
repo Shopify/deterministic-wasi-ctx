@@ -33,3 +33,7 @@ fmt-deterministic-wasi-ctx-test-programs:
 
 test: build-deterministic-wasi-ctx-test-programs
 	cargo test --package deterministic-wasi-ctx
+
+unused-dependencies:
+	cargo install cargo-udeps --locked --version ~0.1
+	cargo +nightly udeps
