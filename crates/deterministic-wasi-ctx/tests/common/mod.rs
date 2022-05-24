@@ -2,11 +2,8 @@ use std::path::Path;
 use wasi_common::WasiCtx;
 use wasmtime::*;
 
-pub fn create_default_wasi_ctx() -> WasiCtx {
-    deterministic_wasi_ctx::build_wasi_ctx(42)
-}
-
-pub fn create_instance(wasi: WasiCtx, module_name: &str) -> (Store<WasiCtx>, Instance) {
+pub fn create_instance(module_name: &str) -> (Store<WasiCtx>, Instance) {
+    let wasi = deterministic_wasi_ctx::build_wasi_ctx();
     let engine = Engine::default();
     let mut linker = Linker::new(&engine);
     wasmtime_wasi::add_to_linker(&mut linker, |s| s).unwrap();

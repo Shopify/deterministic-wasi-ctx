@@ -1,8 +1,8 @@
 use cap_std::time::{Duration, Instant, SystemTime};
 use wasi_common::{WasiClocks, WasiMonotonicClock, WasiSystemClock};
 
-// doesn't matter too much what this is set to since the clocks are going to be stubbed
-const TIMER_RESOLUTION_MS: u64 = 100;
+// There is no resolution given it's a stubbed clock
+const TIMER_RESOLUTION_MS: u64 = 0;
 
 pub fn new_clocks() -> WasiClocks {
     let instant = Instant::from_std(std::time::Instant::now());
@@ -19,12 +19,7 @@ struct DeterministicSystemClock {
 
 impl DeterministicSystemClock {
     pub fn new() -> DeterministicSystemClock {
-        // Make this Dec 25, 1999 so it's obvious it's not correct but also not the epoch since someone
-        // could think it was unintentionally set to the epoch in that case.
-        // Using an offset from the Unix epoch since computing this from a datetime would require pulling
-        // a crate.
-        const SECONDS_IN_A_YEAR: u64 = 31_536_000;
-        let stubbed_time = SystemTime::from_std(std::time::UNIX_EPOCH + Duration::from_secs(SECONDS_IN_A_YEAR * 30));
+        let stubbed_time = SystemTime::from_std(std::time::UNIX_EPOCH);
         DeterministicSystemClock {
             stubbed_time
         }
