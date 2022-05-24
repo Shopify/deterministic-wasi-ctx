@@ -14,15 +14,13 @@ pub fn new_clocks() -> WasiClocks {
 }
 
 struct DeterministicSystemClock {
-    stubbed_time: SystemTime
+    stubbed_time: SystemTime,
 }
 
 impl DeterministicSystemClock {
     pub fn new() -> DeterministicSystemClock {
         let stubbed_time = SystemTime::from_std(std::time::UNIX_EPOCH);
-        DeterministicSystemClock {
-            stubbed_time
-        }
+        DeterministicSystemClock { stubbed_time }
     }
 }
 
