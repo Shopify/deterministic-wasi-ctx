@@ -27,6 +27,20 @@ let instance = linker.instantiate(&mut store, &module).unwrap();
 
 `deterministic-wasi-ctx` is a beta project and will be under major development. We welcome feedback, bug reports and bug fixes. We're also happy to discuss feature development but please discuss the features in an issue before contributing.
 
+## Build dependencies
+
+- [rustup](https://rustup.rs/)
+- The latest release of Rust on the stable channel
+- `wasm32-wasi` target, can be installed by running `rustup target add wasm32-wasi`
+
+## Building
+
+After all the dependencies are installed, run `make build-deterministic-wasi-ctx` to build the crate.
+
+## Testing
+
+Run `make test` to run integration tests.
+
 ## Structure
 
 The `deterministic-wasi-ctx-test-programs` crate is used to build a collection of Wasm files invoking WASI functions that the integration tests in the `deterministic-wasi-ctx` crate use to verify the output from those Wasm files is deterministic.
