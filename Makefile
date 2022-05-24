@@ -23,6 +23,8 @@ deterministic-wasi-ctx:
 deterministic-wasi-ctx-test-programs:
 	cargo $(CMD) --package deterministic-wasi-ctx-test-programs --target wasm32-wasi
 
+fmt: fmt-deterministic-wasi-ctx fmt-deterministic-wasi-ctx-test-programs
+
 fmt-deterministic-wasi-ctx:
 	cargo fmt --package deterministic-wasi-ctx -- --check \
 		&& cargo clippy --package deterministic-wasi-ctx -- -D warnings
