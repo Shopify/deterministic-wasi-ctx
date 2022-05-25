@@ -8,6 +8,21 @@ Determinism refers to the property that a provided WASI function will **always**
 
 This can be useful in a variety of contexts. For example, caching the results of invoking a function in a Wasm module. Or mitigating attacks that attempt to time how long certain operations take to complete using a monotonic clock.
 
+## Usage
+
+```rust
+let wasi = deterministic_wasi_ctx::build_wasi_ctx();
+let engine = Engine::default();
+let mut linker = Linker::new(&engine);
+wasmtime_wasi::add_to_linker(&mut linker, |s| s).unwrap();
+let module_path = ...; // path to a Wasm module
+let module = Module::from_file(&engine, module_path).unwrap();
+let mut store = Store::new(&engine, wasi);
+linker.module(&mut store, "", &module).unwrap();
+let instance = linker.instantiate(&mut store, &module).unwrap();
+... // invoke functions on `instance`
+```
+
 ## Contributing
 
 `deterministic-wasi-ctx` is a beta project and will be under major development. We welcome feedback, bug reports and bug fixes. We're also happy to discuss feature development but please discuss the features in an issue before contributing.
@@ -25,3 +40,7 @@ After all the dependencies are installed, run `make build-deterministic-wasi-ctx
 ## Testing
 
 Run `make test` to run integration tests.
+
+## Structure
+
+The `deterministic-wasi-ctx-test-programs` crate is used to build a collection of Wasm files invoking WASI functions that the integration tests in the `deterministic-wasi-ctx` crate use to verify the output from those Wasm files is deterministic.

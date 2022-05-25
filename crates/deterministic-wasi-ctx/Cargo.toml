@@ -4,6 +4,15 @@ version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0 WITH LLVM-exception"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+anyhow = "1.0.56"
+async-trait = "0.1.53"
+cap-std = "0.24.2"
+wasi-common = ">= 0.34.0, < 0.37"
+rand_core = "0.6.3"
+rand_pcg = "0.3.1"
+
+[dev-dependencies]
+more-asserts = "*"
+wasmtime = "0.34.1"
+wasmtime-wasi = "0.34.1"
