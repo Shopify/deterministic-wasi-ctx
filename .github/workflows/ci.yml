@@ -41,7 +41,7 @@ jobs:
             ${{ runner.os }}-cargo-target-
 
       - name: Tests
-        run: make tests
+        run: make test
 
       - name: Lint
         run: make fmt
