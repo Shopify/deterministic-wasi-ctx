@@ -1,6 +1,6 @@
 [package]
 name = "deterministic-wasi-ctx"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "Apache-2.0 WITH LLVM-exception"
 description = "A wasi-common WasiCtx implementation that is fully deterministic"
@@ -17,6 +17,6 @@ rand_core = "0.6.3"
 rand_pcg = "0.3.1"
 
 [dev-dependencies]
-more-asserts = "*"
+more-asserts = "0.2.2"
 wasmtime = "0.34.1"
 wasmtime-wasi = "0.34.1"
