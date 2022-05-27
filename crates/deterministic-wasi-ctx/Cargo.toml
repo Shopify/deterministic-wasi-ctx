@@ -3,6 +3,10 @@ name = "deterministic-wasi-ctx"
 version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0 WITH LLVM-exception"
+description = "A wasi-common WasiCtx implementation that is fully deterministic"
+homepage = "https://github.com/Shopify/deterministic-wasi-ctx"
+keywords = ["wasi"]
+categories = ["wasm"]
 
 [dependencies]
 anyhow = "1.0.56"
