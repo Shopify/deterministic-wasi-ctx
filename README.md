@@ -44,3 +44,8 @@ Run `make test` to run integration tests.
 ## Structure
 
 The `deterministic-wasi-ctx-test-programs` crate is used to build a collection of Wasm files invoking WASI functions that the integration tests in the `deterministic-wasi-ctx` crate use to verify the output from those Wasm files is deterministic.
+
+## Releasing
+
+1. Create and merge a PR incrementing the crates' versions in accordance with [SemVer](https://semver.org/) based on changes from the previous release
+1. Create a new release in [Github](https://github.com/Shopify/deterministic-wasi-ctx/releases/new) with a name like `v0.1.0` where the version matches the crates' versions
