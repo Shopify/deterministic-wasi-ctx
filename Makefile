@@ -33,6 +33,9 @@ fmt-deterministic-wasi-ctx-test-programs:
 	cargo fmt --package deterministic-wasi-ctx-test-programs -- --check \
 		&& cargo clippy --package deterministic-wasi-ctx-test-programs --target wasm32-wasi -- -D warnings
 
+publish:
+	cargo publish --package deterministic-wasi-ctx
+
 test: build-deterministic-wasi-ctx-test-programs
 	cargo test --package deterministic-wasi-ctx
 
