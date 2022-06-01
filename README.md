@@ -49,3 +49,4 @@ The `deterministic-wasi-ctx-test-programs` crate is used to build a collection o
 
 1. Create and merge a PR incrementing the crates' versions in accordance with [SemVer](https://semver.org/) based on changes from the previous release
 1. Create a new release in [Github](https://github.com/Shopify/deterministic-wasi-ctx/releases/new) with a name like `v0.1.0` where the version matches the crates' versions
+1. Publish the new version of the crate by running `make publish`
