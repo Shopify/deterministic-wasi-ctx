@@ -26,11 +26,11 @@ deterministic-wasi-ctx-test-programs:
 fmt: fmt-deterministic-wasi-ctx fmt-deterministic-wasi-ctx-test-programs
 
 fmt-deterministic-wasi-ctx:
-	cargo fmt --locked --package deterministic-wasi-ctx -- --check \
+	cargo fmt --package deterministic-wasi-ctx -- --check \
 		&& cargo clippy --package deterministic-wasi-ctx -- -D warnings
 
 fmt-deterministic-wasi-ctx-test-programs:
-	cargo fmt --locked --package deterministic-wasi-ctx-test-programs -- --check \
+	cargo fmt --package deterministic-wasi-ctx-test-programs -- --check \
 		&& cargo clippy --package deterministic-wasi-ctx-test-programs --target wasm32-wasi -- -D warnings
 
 publish:
