@@ -1,4 +1,4 @@
-use cap_std::time::{Duration, Instant, SystemTime};
+use cap_primitives::time::{Duration, Instant, SystemTime};
 use wasi_common::{WasiClocks, WasiMonotonicClock, WasiSystemClock};
 
 // There is no resolution given it's a stubbed clock
