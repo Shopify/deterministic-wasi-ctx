@@ -376,7 +376,6 @@ dependencies = [
  "anyhow",
  "async-trait",
  "cap-primitives",
- "cap-std",
  "more-asserts",
  "rand_core",
  "rand_pcg",
