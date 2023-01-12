@@ -27,7 +27,7 @@ where
 {
     let answer = instance
         .get_func(&mut store, func_name)
-        .expect(format!("`{}` was not an exported function", func_name).as_str());
-    let answer = answer.typed::<Params, Results, _>(&store).unwrap();
+        .unwrap_or_else(|| panic!("`{}` was not an exported function", func_name));
+    let answer = answer.typed::<Params, Results>(&store).unwrap();
     answer.call(&mut store, params).unwrap()
 }

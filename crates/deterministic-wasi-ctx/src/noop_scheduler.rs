@@ -1,5 +1,5 @@
 use wasi_common::sched::{Duration, WasiSched};
-use wasi_common::Poll;
+use wasi_common::{Error, Poll};
 
 pub struct NoopScheduler;
 
@@ -11,15 +11,15 @@ impl NoopScheduler {
 
 #[async_trait::async_trait]
 impl WasiSched for NoopScheduler {
-    async fn poll_oneoff<'a>(&self, _poll: &mut Poll<'a>) -> anyhow::Result<()> {
+    async fn poll_oneoff<'a>(&self, _poll: &mut Poll<'a>) -> anyhow::Result<(), Error> {
         Ok(())
     }
 
-    async fn sched_yield(&self) -> anyhow::Result<()> {
+    async fn sched_yield(&self) -> anyhow::Result<(), Error> {
         Ok(())
     }
 
-    async fn sleep(&self, _duration: Duration) -> anyhow::Result<()> {
+    async fn sleep(&self, _duration: Duration) -> anyhow::Result<(), Error> {
         Ok(())
     }
 }
