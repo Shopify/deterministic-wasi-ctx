@@ -1,6 +1,6 @@
 [package]
 name = "deterministic-wasi-ctx"
-version = "0.1.9"
+version = "0.1.10"
 edition = "2021"
 license = "Apache-2.0 WITH LLVM-exception"
 description = "A wasi-common WasiCtx implementation that is fully deterministic"
