@@ -12,6 +12,6 @@ assignees:
 ## Problem
 ...
 
-## Stacktrace
+## Error Message and Context
 ...
 
