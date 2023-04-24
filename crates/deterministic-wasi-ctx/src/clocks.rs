@@ -6,11 +6,9 @@ const TIMER_RESOLUTION_MS: u64 = 0;
 
 pub fn new_clocks() -> WasiClocks {
     let instant = Instant::from_std(std::time::Instant::now());
-    WasiClocks {
-        system: Box::new(DeterministicSystemClock::new()),
-        monotonic: Box::new(DeterministicMonotonicClock::new(instant)),
-        creation_time: instant,
-    }
+    WasiClocks::new()
+        .with_system(DeterministicSystemClock::new())
+        .with_monotonic(DeterministicMonotonicClock::new(instant))
 }
 
 struct DeterministicSystemClock {
