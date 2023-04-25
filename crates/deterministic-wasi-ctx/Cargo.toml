@@ -12,11 +12,11 @@ categories = ["wasm"]
 anyhow = "1.0.56"
 async-trait = "0.1.53"
 cap-primitives = "1.0.3"
-wasi-common = ">= 4.0.0, < 7.1.0"
+wasi-common = ">= 8.0.0, < 8.1.0"
 rand_core = "0.6.3"
 rand_pcg = "0.3.1"
 
 [dev-dependencies]
 more-asserts = "0.3.1"
-wasmtime = "7.0.0"
-wasmtime-wasi = "7.0.0"
+wasmtime = "8.0.0"
+wasmtime-wasi = "8.0.0"
