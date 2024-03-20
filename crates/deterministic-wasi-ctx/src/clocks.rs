@@ -1,5 +1,5 @@
 use cap_primitives::time::{Duration, Instant, SystemTime};
-use wasi_common::{WasiClocks, WasiMonotonicClock, WasiSystemClock};
+use wasi_common::clocks::{WasiClocks, WasiMonotonicClock, WasiSystemClock};
 
 // There is no resolution given it's a stubbed clock
 const TIMER_RESOLUTION_MS: u64 = 0;
