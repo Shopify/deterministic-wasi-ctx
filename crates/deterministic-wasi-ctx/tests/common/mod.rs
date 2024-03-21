@@ -6,7 +6,7 @@ pub fn create_instance(module_name: &str) -> (Store<WasiCtx>, Instance) {
     let wasi = deterministic_wasi_ctx::build_wasi_ctx();
     let engine = Engine::default();
     let mut linker = Linker::new(&engine);
-    wasmtime_wasi::add_to_linker(&mut linker, |s| s).unwrap();
+    wasi_common::sync::add_to_linker(&mut linker, |s| s).unwrap();
     let module_path = Path::new("../../target/wasm32-wasi/debug").join(module_name);
     let module = Module::from_file(&engine, module_path).unwrap();
     let mut store = Store::new(&engine, wasi);
