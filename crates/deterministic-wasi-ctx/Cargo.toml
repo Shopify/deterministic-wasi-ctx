@@ -4,7 +4,7 @@ version = "0.1.20"
 edition = "2021"
 license = "Apache-2.0 WITH LLVM-exception"
 description = "A wasi-common WasiCtx implementation that is fully deterministic"
-homepage = "https://github.com/Shopify/deterministic-wasi-ctx"
+repository = "https://github.com/Shopify/deterministic-wasi-ctx"
 keywords = ["wasi"]
 categories = ["wasm"]
 
