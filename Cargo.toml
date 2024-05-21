@@ -3,3 +3,5 @@ members = [
     "crates/deterministic-wasi-ctx",
     "crates/deterministic-wasi-ctx-test-programs",
 ]
+
+resolver = "2"
