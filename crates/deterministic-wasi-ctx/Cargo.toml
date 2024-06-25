@@ -12,7 +12,7 @@ categories = ["wasm"]
 anyhow = "1.0.56"
 async-trait = "0.1.53"
 cap-primitives = "3.0.0"
-wasi-common = ">= 20.0.0, < 21.0.0"
+wasi-common = ">= 20.0.0, < 23.0.0"
 rand_core = "0.6.3"
 rand_pcg = "0.3.1"
 
