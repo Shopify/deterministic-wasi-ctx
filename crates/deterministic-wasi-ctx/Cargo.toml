@@ -18,5 +18,5 @@ rand_pcg = "0.3.1"
 
 [dev-dependencies]
 more-asserts = "0.3.1"
-wasmtime = "25.0.0"
+wasmtime = "25.0.2"
 wasmtime-wasi = "25.0.0"
