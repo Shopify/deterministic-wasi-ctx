@@ -31,7 +31,7 @@ let instance = linker.instantiate(&mut store, &module).unwrap();
 
 - [rustup](https://rustup.rs/)
 - The latest release of Rust on the stable channel
-- `wasm32-wasi` target, can be installed by running `rustup target add wasm32-wasi`
+- `wasm32-wasip1` target, can be installed by running `rustup target add wasm32-wasip1`
 
 ## Building
 
