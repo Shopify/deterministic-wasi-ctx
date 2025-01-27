@@ -7,7 +7,7 @@ pub fn create_instance(module_name: &str) -> (Store<WasiCtx>, Instance) {
     let engine = Engine::default();
     let mut linker = Linker::new(&engine);
     wasi_common::sync::add_to_linker(&mut linker, |s| s).unwrap();
-    let module_path = Path::new("../../target/wasm32-wasi/debug").join(module_name);
+    let module_path = Path::new("../../target/wasm32-wasip1/debug").join(module_name);
     let module = Module::from_file(&engine, module_path).unwrap();
     let mut store = Store::new(&engine, wasi);
     linker.module(&mut store, "", &module).unwrap();
