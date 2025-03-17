@@ -2,7 +2,7 @@
 
 ## About this repo
 
-A Rust crate for creating a [wasi-common](https://crates.io/crates/wasi-common) [WASI context](https://docs.rs/wasi-common/0.36.0/wasi_common/struct.WasiCtx.html) implementation that is fully deterministic.
+A Rust crate for creating a [wasmtime-wasi](https://crates.io/crates/wasmtime-wasi) [WASI context](https://docs.rs/wasmtime-wasi/30.0.0/wasmtime_wasi/preview1/struct.WasiP1Ctx.html) implementation that is fully deterministic.
 
 Determinism refers to the property that a provided WASI function will **always** return the same series of results for the same series of invocations. For example, invoking `clock_time_get` against the system clock will always return the same timestamp. Or invoking `random_get` will always return `155` on the first invocation followed by always returning `111` on the second invocation.
 
@@ -11,14 +11,18 @@ This can be useful in a variety of contexts. For example, caching the results of
 ## Usage
 
 ```rust
-let wasi = deterministic_wasi_ctx::build_wasi_ctx();
 let engine = Engine::default();
+let mut wasi_builder = WasiCtxBuilder::new();
 let mut linker = Linker::new(&engine);
-wasmtime_wasi::add_to_linker(&mut linker, |s| s).unwrap();
+
+deterministic_wasi_ctx::add_determinism_to_wasi_ctx_builder(&mut wasi_builder);
+let wasi = wasi_builder.build_p1();
+wasmtime_wasi::preview1::add_to_linker_sync(&mut linker, |s| s)?;
+deterministic_wasi_ctx::replace_scheduling_functions(&mut linker)?;
+
+let mut store = Store::new(&engine, wasi);
 let module_path = ...; // path to a Wasm module
 let module = Module::from_file(&engine, module_path).unwrap();
-let mut store = Store::new(&engine, wasi);
-linker.module(&mut store, "", &module).unwrap();
 let instance = linker.instantiate(&mut store, &module).unwrap();
 ... // invoke functions on `instance`
 ```

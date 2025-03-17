@@ -1,7 +1,8 @@
 use anyhow::Result;
-use std::path::Path;
+use std::{fs, path::Path};
 use wasi_common::WasiCtx;
 use wasmtime::*;
+use wasmtime_wasi::{preview1::WasiP1Ctx, WasiCtxBuilder};
 
 pub fn test_instance<Params, Results, F>(module_name: &str, testcase: F) -> Result<()>
 where
@@ -9,22 +10,70 @@ where
     Results: WasmResults,
     F: Fn(Box<dyn FnOnce(&str, Params) -> Result<Results>>) -> Result<()>,
 {
-    let wasi = deterministic_wasi_ctx::build_wasi_ctx();
-    let engine = Engine::default();
-    let mut linker = Linker::new(&engine);
-    wasi_common::sync::add_to_linker(&mut linker, |s| s)?;
     let module_path = Path::new("../../target/wasm32-wasip1/debug").join(module_name);
-    let module = Module::from_file(&engine, module_path)?;
-    let mut store = Store::new(&engine, wasi);
-    linker.module(&mut store, "", &module)?;
-    let instance = linker.instantiate(&mut store, &module)?;
+    let bytes = fs::read(module_path)?;
+    test_instance_with_bytes(&bytes, testcase)
+}
+
+pub fn test_instance_with_bytes<Params, Results, F>(bytes: &[u8], testcase: F) -> Result<()>
+where
+    Params: WasmParams,
+    Results: WasmResults,
+    F: Fn(Box<dyn FnOnce(&str, Params) -> Result<Results>>) -> Result<()>,
+{
+    let engine = Engine::default();
+    let module = Module::new(&engine, bytes)?;
+
+    let (store, instance) = create_instance_with_legacy_ctx(&engine, &module)?;
     testcase(Box::new(move |func_name, params| {
         invoke_func(store, instance, func_name, params)
-    }))
+    }))?;
+
+    let (store, instance) = create_instance(&engine, &module)?;
+    testcase(Box::new(move |func_name, params| {
+        invoke_func(store, instance, func_name, params)
+    }))?;
+
+    Ok(())
+}
+
+fn create_instance_with_legacy_ctx(
+    engine: &Engine,
+    module: &Module,
+) -> Result<(Store<WasiCtx>, Instance)> {
+    let wasi = deterministic_wasi_ctx::build_wasi_ctx();
+
+    let mut linker = Linker::new(&engine);
+    wasi_common::sync::add_to_linker(&mut linker, |s| s)?;
+
+    setup_store_and_instance(engine, module, wasi, &mut linker)
+}
+
+fn create_instance(engine: &Engine, module: &Module) -> Result<(Store<WasiP1Ctx>, Instance)> {
+    let mut wasi_builder = WasiCtxBuilder::new();
+    deterministic_wasi_ctx::add_determinism_to_wasi_ctx_builder(&mut wasi_builder);
+    let wasi = wasi_builder.build_p1();
+
+    let mut linker = Linker::new(&engine);
+    wasmtime_wasi::preview1::add_to_linker_sync(&mut linker, |s| s)?;
+    deterministic_wasi_ctx::replace_scheduling_functions(&mut linker)?;
+
+    setup_store_and_instance(engine, module, wasi, &mut linker)
+}
+
+fn setup_store_and_instance<T>(
+    engine: &Engine,
+    module: &Module,
+    wasi: T,
+    linker: &mut Linker<T>,
+) -> Result<(Store<T>, Instance)> {
+    let mut store = Store::new(&engine, wasi);
+    let instance = linker.instantiate(&mut store, &module)?;
+    Ok((store, instance))
 }
 
 fn invoke_func<Params, Results>(
-    mut store: Store<WasiCtx>,
+    mut store: impl AsContextMut,
     instance: Instance,
     func_name: &str,
     params: Params,

@@ -431,6 +431,7 @@ dependencies = [
  "more-asserts",
  "rand_core",
  "rand_pcg",
+ "wasi 0.11.0+wasi-snapshot-preview1",
  "wasi-common",
  "wasmtime",
  "wasmtime-wasi",
