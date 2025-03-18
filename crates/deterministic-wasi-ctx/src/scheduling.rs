@@ -66,7 +66,7 @@ where
                         mem::size_of::<Event>(),
                     )
                 };
-                memory.write(&mut caller, offset, &event_buffer)?
+                memory.write(&mut caller, offset, event_buffer)?
             }
 
             // Copy number of subscriptions into number of events pointer.
