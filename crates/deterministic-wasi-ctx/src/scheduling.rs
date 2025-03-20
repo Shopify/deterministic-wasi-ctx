@@ -4,16 +4,30 @@ use anyhow::{anyhow, Result};
 use wasi::{Event, EventFdReadwrite, Subscription};
 use wasmtime::{Caller, Linker};
 
-/// Adds implementations for `poll_oneoff` and `sched_yield` to the linker
-/// which will return immediately.
+/// Adds implementations for WASI preview 1 `poll_oneoff` and `sched_yield` to
+/// the linker which will return immediately.
 /// Note: This function will enable shadowing on the linker.
 pub fn replace_scheduling_functions<T>(linker: &mut Linker<T>) -> Result<()>
 where
     T: Send,
 {
+    override_scheduling_functions(linker, "wasi_snapshot_preview1")
+}
+
+/// Adds implementations for WASI preview 0 `poll_oneoff` and `sched_yield` to
+/// the linker which will return immediately.
+/// Note: This function will enable shadowing on the linker.
+pub fn replace_scheduling_functions_for_wasi_preview_0<T>(linker: &mut Linker<T>) -> Result<()>
+where
+    T: Send,
+{
+    override_scheduling_functions(linker, "wasi_unstable")
+}
+
+fn override_scheduling_functions<T>(linker: &mut Linker<T>, module: &str) -> Result<()> {
     linker.allow_shadowing(true);
     linker.func_wrap(
-        "wasi_snapshot_preview1",
+        module,
         "poll_oneoff",
         |mut caller: Caller<'_, T>,
          in_ptr: i32,
@@ -77,9 +91,7 @@ where
         },
     )?;
 
-    linker.func_wrap("wasi_snapshot_preview1", "sched_yield", || {
-        wasi::ERRNO_SUCCESS.raw() as i32
-    })?;
+    linker.func_wrap(module, "sched_yield", || wasi::ERRNO_SUCCESS.raw() as i32)?;
 
     Ok(())
 }
