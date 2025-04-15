@@ -29,7 +29,7 @@ let instance = linker.instantiate(&mut store, &module).unwrap();
 
 ## Contributing
 
-`deterministic-wasi-ctx` is a beta project and will be under major development. We welcome feedback, bug reports and bug fixes. We're also happy to discuss feature development but please discuss the features in an issue before contributing.
+We welcome feedback, bug reports and bug fixes. We're also happy to discuss feature development but please discuss the features in an issue before contributing.
 
 ## Build dependencies
 
