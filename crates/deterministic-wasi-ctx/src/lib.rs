@@ -1,9 +1,7 @@
 mod clocks;
-mod legacy;
 mod scheduling;
 
 use clocks::{DeterministicMonotonicClock, DeterministicWallClock};
-pub use legacy::build_wasi_ctx;
 use rand_core::SeedableRng;
 use rand_pcg::Pcg64Mcg;
 pub use scheduling::{
