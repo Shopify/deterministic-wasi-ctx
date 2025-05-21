@@ -1,6 +1,5 @@
 use anyhow::Result;
 use std::{fs, path::Path};
-use wasi_common::WasiCtx;
 use wasmtime::*;
 use wasmtime_wasi::{preview1::WasiP1Ctx, WasiCtxBuilder};
 
@@ -24,10 +23,13 @@ where
     let engine = Engine::default();
     let module = Module::new(&engine, bytes)?;
 
-    let (store, instance) = create_instance_with_legacy_ctx(&engine, &module)?;
-    testcase(Box::new(move |func_name, params| {
-        invoke_func(store, instance, func_name, params)
-    }))?;
+    #[cfg(feature = "wasi-common")]
+    {
+        let (store, instance) = create_instance_with_legacy_ctx(&engine, &module)?;
+        testcase(Box::new(move |func_name, params| {
+            invoke_func(store, instance, func_name, params)
+        }))?;
+    }
 
     let (store, instance) = create_instance(&engine, &module)?;
     testcase(Box::new(move |func_name, params| {
@@ -37,10 +39,11 @@ where
     Ok(())
 }
 
+#[cfg(feature = "wasi-common")]
 fn create_instance_with_legacy_ctx(
     engine: &Engine,
     module: &Module,
-) -> Result<(Store<WasiCtx>, Instance)> {
+) -> Result<(Store<wasi_common::WasiCtx>, Instance)> {
     let wasi = deterministic_wasi_ctx::build_wasi_ctx();
 
     let mut linker = Linker::new(&engine);

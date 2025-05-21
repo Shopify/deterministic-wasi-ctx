@@ -16,7 +16,7 @@ cap-primitives = "3.0.0"
 wasi = "0.11.0"
 wasmtime = { version = "32.0.0", default-features = false }
 wasmtime-wasi = "32.0.0"
-wasi-common = "32.0.0"
+wasi-common = { version = "32.0.0", optional = true }
 rand_core = "0.6.3"
 rand_pcg = "0.3.1"
 
@@ -26,3 +26,6 @@ wasmtime = { version = "32.0.0", default-features = false, features = [
     "cranelift", # Required to compile modules in tests.
     "wat",       # We use WAT to create some invalid WASI p1 modules.
 ] }
+
+[features]
+wasi-common = ["dep:wasi-common"]

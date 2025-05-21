@@ -1,8 +1,10 @@
 mod clocks;
+#[cfg(feature = "wasi-common")]
 mod legacy;
 mod scheduling;
 
 use clocks::{DeterministicMonotonicClock, DeterministicWallClock};
+#[cfg(feature = "wasi-common")]
 pub use legacy::build_wasi_ctx;
 use rand_core::SeedableRng;
 use rand_pcg::Pcg64Mcg;
