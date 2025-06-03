@@ -1,7 +1,7 @@
 use anyhow::Result;
 use std::{fs, path::Path};
 use wasmtime::*;
-use wasmtime_wasi::{preview1::WasiP1Ctx, WasiCtxBuilder};
+use wasmtime_wasi::{p2::WasiCtxBuilder, preview1::WasiP1Ctx};
 
 pub fn test_instance<Params, Results, F>(module_name: &str, testcase: F) -> Result<()>
 where
