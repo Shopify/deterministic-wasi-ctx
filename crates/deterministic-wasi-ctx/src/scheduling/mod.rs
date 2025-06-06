@@ -1,8 +1,11 @@
 use std::{mem, ptr, slice};
 
 use anyhow::{anyhow, Result};
-use wasi::{Event, EventFdReadwrite, Subscription};
 use wasmtime::{Caller, Linker};
+
+use wasi_structs::{Event, EventFdReadwrite, Subscription};
+
+mod wasi_structs;
 
 /// Adds implementations for WASI preview 1 `poll_oneoff` and `sched_yield` to
 /// the linker which will return immediately.
@@ -57,15 +60,10 @@ fn override_scheduling_functions<T>(linker: &mut Linker<T>, module: &str) -> Res
                 // Create a successful `Event` for each subscription.
                 let event = Event {
                     userdata: subscription.userdata,
-                    error: wasi::ERRNO_SUCCESS,
+                    error: 0,
                     // See https://github.com/WebAssembly/wasi-libc/blob/e9524a0980b9bb6bb92e87a41ed1055bdda5bb86/libc-bottom-half/headers/public/wasi/api.h#L1100-L1121
                     // for the mapping between the integers and the event type.
-                    type_: match subscription.u.tag {
-                        0 => wasi::EVENTTYPE_CLOCK,
-                        1 => wasi::EVENTTYPE_FD_READ,
-                        2 => wasi::EVENTTYPE_FD_WRITE,
-                        _ => unreachable!(),
-                    },
+                    type_: subscription.u.tag,
                     fd_readwrite: EventFdReadwrite {
                         nbytes: 0,
                         flags: 0,
@@ -87,11 +85,11 @@ fn override_scheduling_functions<T>(linker: &mut Linker<T>, module: &str) -> Res
             let buffer = nsubscriptions.to_le_bytes();
             memory.write(&mut caller, nevents_ptr, &buffer)?;
 
-            Ok(wasi::ERRNO_SUCCESS.raw() as i32)
+            Ok(0)
         },
     )?;
 
-    linker.func_wrap(module, "sched_yield", || wasi::ERRNO_SUCCESS.raw() as i32)?;
+    linker.func_wrap(module, "sched_yield", || 0)?;
 
     Ok(())
 }
