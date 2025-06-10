@@ -26,9 +26,8 @@ deterministic-wasi-ctx-test-programs:
 fmt: fmt-deterministic-wasi-ctx fmt-deterministic-wasi-ctx-test-programs
 
 fmt-deterministic-wasi-ctx:
-	cargo fmt --package deterministic-wasi-ctx -- --check
-	cargo clippy --package deterministic-wasi-ctx -- -D warnings
-	cargo clippy --package deterministic-wasi-ctx --features wasi-common -- -D warnings
+	cargo fmt --package deterministic-wasi-ctx -- --check \
+		&& cargo clippy --package deterministic-wasi-ctx -- -D warnings
 
 fmt-deterministic-wasi-ctx-test-programs:
 	cargo fmt --package deterministic-wasi-ctx-test-programs -- --check \
@@ -39,7 +38,6 @@ publish:
 
 test: build-deterministic-wasi-ctx-test-programs
 	cargo test --locked --package deterministic-wasi-ctx
-	cargo test --locked --package deterministic-wasi-ctx --features wasi-common
 
 unused-dependencies:
 	cargo install cargo-udeps --locked --version ~0.1
