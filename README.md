@@ -8,10 +8,6 @@ Determinism refers to the property that a provided WASI function will **always**
 
 This can be useful in a variety of contexts. For example, caching the results of invoking a function in a Wasm module.
 
-## Features
-
-* `wasi-common` - Enabling this feature exposes APIs that use the `wasi-common` crate instead of `wasmtime-wasi`.
-
 ## Usage
 
 ```rust
