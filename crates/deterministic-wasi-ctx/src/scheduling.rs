@@ -9,7 +9,7 @@ use wasmtime::{Caller, Linker};
 /// Note: This function will enable shadowing on the linker.
 pub fn replace_scheduling_functions<T>(linker: &mut Linker<T>) -> Result<()>
 where
-    T: Send,
+    T: Send + 'static,
 {
     override_scheduling_functions(linker, "wasi_snapshot_preview1")
 }
@@ -19,12 +19,12 @@ where
 /// Note: This function will enable shadowing on the linker.
 pub fn replace_scheduling_functions_for_wasi_preview_0<T>(linker: &mut Linker<T>) -> Result<()>
 where
-    T: Send,
+    T: Send + 'static,
 {
     override_scheduling_functions(linker, "wasi_unstable")
 }
 
-fn override_scheduling_functions<T>(linker: &mut Linker<T>, module: &str) -> Result<()> {
+fn override_scheduling_functions<T: 'static>(linker: &mut Linker<T>, module: &str) -> Result<()> {
     linker.allow_shadowing(true);
     linker.func_wrap(
         module,
