@@ -7,7 +7,7 @@ use rand_pcg::Pcg64Mcg;
 pub use scheduling::{
     replace_scheduling_functions, replace_scheduling_functions_for_wasi_preview_0,
 };
-use wasmtime_wasi::p2::WasiCtxBuilder;
+use wasmtime_wasi::WasiCtxBuilder;
 
 pub fn add_determinism_to_wasi_ctx_builder(
     wasi_builder: &mut WasiCtxBuilder,
