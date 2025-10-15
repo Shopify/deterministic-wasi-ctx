@@ -14,14 +14,14 @@ async-trait = "0.1.53"
 cap-primitives = "3.0.0"
 # Newer versions drop support for WASI preview 1.
 wasi = "0.11.0"
-wasmtime = { version = "36.0.0", default-features = false }
-wasmtime-wasi = "36.0.0"
+wasmtime = { version = "37.0.2", default-features = false }
+wasmtime-wasi = "37.0.2"
 rand_core = "0.6.3"
 rand_pcg = "0.3.1"
 
 [dev-dependencies]
 more-asserts = "0.3.1"
-wasmtime = { version = "36.0.0", default-features = false, features = [
+wasmtime = { version = "37.0.2", default-features = false, features = [
     "cranelift", # Required to compile modules in tests.
     "wat",       # We use WAT to create some invalid WASI p1 modules.
 ] }

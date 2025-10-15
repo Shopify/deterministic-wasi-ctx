@@ -28,7 +28,7 @@ where
     let wasi = wasi_builder.build_p1();
 
     let mut linker = Linker::new(&engine);
-    wasmtime_wasi::preview1::add_to_linker_sync(&mut linker, |s| s)?;
+    wasmtime_wasi::p1::add_to_linker_sync(&mut linker, |s| s)?;
     deterministic_wasi_ctx::replace_scheduling_functions(&mut linker)?;
 
     let mut store = Store::new(&engine, wasi);
