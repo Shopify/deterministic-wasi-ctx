@@ -334,7 +334,7 @@ dependencies = [
 
 [[package]]
 name = "deterministic-wasi-ctx"
-version = "3.0.3"
+version = "3.0.4"
 dependencies = [
  "anyhow",
  "async-trait",
