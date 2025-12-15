@@ -25,7 +25,7 @@ jobs:
           target: wasm32-wasip1
 
       - name: Cargo cache
-        uses: actions/cache@2f8e54208210a422b2efd51efaa6bd6d7ca8920f # v3.4.3
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: ~/.cargo
           key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.toml') }}
@@ -33,7 +33,7 @@ jobs:
             ${{ runner.os }}-cargo-
         
       - name: Cargo target cache
-        uses: actions/cache@2f8e54208210a422b2efd51efaa6bd6d7ca8920f # v3.4.3
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: target
           key: ${{ runner.os }}-cargo-target-${{ hashFiles('Cargo.toml') }}
