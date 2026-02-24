@@ -1,8 +1,7 @@
 use std::{mem, ptr, slice};
 
-use anyhow::{anyhow, Result};
 use wasi::{Event, EventFdReadwrite, Subscription};
-use wasmtime::{Caller, Linker};
+use wasmtime::{format_err, Caller, Linker, Result};
 
 /// Adds implementations for WASI preview 1 `poll_oneoff` and `sched_yield` to
 /// the linker which will return immediately.
@@ -34,7 +33,7 @@ fn override_scheduling_functions<T: 'static>(linker: &mut Linker<T>, module: &st
          out_ptr: i32,
          nsubscriptions: i32,
          nevents_ptr: i32|
-         -> anyhow::Result<i32> {
+         -> Result<i32> {
             let in_ptr = in_ptr as usize;
             let out_ptr = out_ptr as usize;
             let nsubscriptions = nsubscriptions as usize;
@@ -42,9 +41,9 @@ fn override_scheduling_functions<T: 'static>(linker: &mut Linker<T>, module: &st
             // See https://github.com/WebAssembly/WASI/blob/3d5e0553cd01dd4d6e2c06ad2a702ee9dda17b7f/legacy/tools/witx-docs.md#pointers
             let memory = caller
                 .get_export("memory")
-                .map_or_else(|| Err(anyhow!("missing required memory export")), Ok)?
+                .map_or_else(|| Err(format_err!("missing required memory export")), Ok)?
                 .into_memory()
-                .map_or_else(|| Err(anyhow!("missing required memory export")), Ok)?;
+                .map_or_else(|| Err(format_err!("missing required memory export")), Ok)?;
 
             for i in 0..nsubscriptions {
                 // Read the `Subscription` from memory from `in_ptr`.

@@ -7,18 +7,21 @@ pub fn test_instance<Params, Results, F>(module_name: &str, testcase: F) -> Resu
 where
     Params: WasmParams,
     Results: WasmResults,
-    F: Fn(Box<dyn FnOnce(&str, Params) -> Result<Results>>) -> Result<()>,
+    F: Fn(Box<dyn FnOnce(&str, Params) -> wasmtime::Result<Results>>) -> wasmtime::Result<()>,
 {
     let module_path = Path::new("../../target/wasm32-wasip1/debug").join(module_name);
     let bytes = fs::read(module_path)?;
-    test_instance_with_bytes(&bytes, testcase)
+    Ok(test_instance_with_bytes(&bytes, testcase)?)
 }
 
-pub fn test_instance_with_bytes<Params, Results, F>(bytes: &[u8], testcase: F) -> Result<()>
+pub fn test_instance_with_bytes<Params, Results, F>(
+    bytes: &[u8],
+    testcase: F,
+) -> wasmtime::Result<()>
 where
     Params: WasmParams,
     Results: WasmResults,
-    F: Fn(Box<dyn FnOnce(&str, Params) -> Result<Results>>) -> Result<()>,
+    F: Fn(Box<dyn FnOnce(&str, Params) -> wasmtime::Result<Results>>) -> wasmtime::Result<()>,
 {
     let engine = Engine::default();
     let module = Module::new(&engine, bytes)?;

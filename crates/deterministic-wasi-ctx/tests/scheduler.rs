@@ -21,7 +21,7 @@ fn test_sleep() -> Result<()> {
 fn test_poll_oneoff_with_bad_in_ptr() -> Result<()> {
     common::test_instance("scheduler.wasm", |invoke_func| {
         // we want to ensure this doesn't cause a panic in the host and the error looks relevant
-        let result: Result<i32, anyhow::Error> =
+        let result: Result<i32, wasmtime::Error> =
             invoke_func("poll_oneoff_test", (i32::MAX - 16, 0, 1, 0));
         assert_has_ptr_related_error(result)
     })
@@ -31,7 +31,7 @@ fn test_poll_oneoff_with_bad_in_ptr() -> Result<()> {
 fn test_poll_oneoff_with_bad_out_ptr() -> Result<()> {
     common::test_instance("scheduler.wasm", |invoke_func| {
         // we want to ensure this doesn't cause a panic in the host and the error looks relevant
-        let result: Result<i32, anyhow::Error> =
+        let result: Result<i32, wasmtime::Error> =
             invoke_func("poll_oneoff_test", (0, i32::MAX - 16, 1, 0));
         assert_has_ptr_related_error(result)
     })
@@ -41,13 +41,13 @@ fn test_poll_oneoff_with_bad_out_ptr() -> Result<()> {
 fn test_poll_oneoff_with_bad_nevents_ptr() -> Result<()> {
     common::test_instance("scheduler.wasm", |invoke_func| {
         // we want to ensure this doesn't cause a panic in the host and the error looks relevant
-        let result: Result<i32, anyhow::Error> =
+        let result: Result<i32, wasmtime::Error> =
             invoke_func("poll_oneoff_test", (0, 0, 1, i32::MAX - 16));
         assert_has_ptr_related_error(result)
     })
 }
 
-fn assert_has_ptr_related_error(result: Result<i32, anyhow::Error>) -> Result<()> {
+fn assert_has_ptr_related_error(result: Result<i32, wasmtime::Error>) -> wasmtime::Result<()> {
     let error = result.unwrap_err();
     let inner_error = error.source().unwrap();
     let err_message = inner_error.to_string();
@@ -61,7 +61,7 @@ fn assert_has_ptr_related_error(result: Result<i32, anyhow::Error>) -> Result<()
 }
 
 #[test]
-fn test_poll_oneoff_with_missing_memory_export() -> Result<()> {
+fn test_poll_oneoff_with_missing_memory_export() -> wasmtime::Result<()> {
     let wat = r#"
 (module
     (import "wasi_snapshot_preview1" "poll_oneoff" (func (;0;) (param i32 i32 i32 i32) (result i32)))
@@ -72,7 +72,7 @@ fn test_poll_oneoff_with_missing_memory_export() -> Result<()> {
 )    
     "#;
     common::test_instance_with_bytes(wat.as_bytes(), |invoke_func| {
-        let result: Result<(), anyhow::Error> = invoke_func("", ());
+        let result: Result<(), wasmtime::Error> = invoke_func("", ());
         let error = result.unwrap_err();
         let inner_error = error.source().unwrap();
         let err_message = inner_error.to_string();
@@ -85,7 +85,7 @@ fn test_poll_oneoff_with_missing_memory_export() -> Result<()> {
 }
 
 #[test]
-fn test_poll_oneoff_with_memory_export_that_isnt_memory() -> Result<()> {
+fn test_poll_oneoff_with_memory_export_that_isnt_memory() -> wasmtime::Result<()> {
     let wat = r#"
 (module
     (import "wasi_snapshot_preview1" "poll_oneoff" (func (;0;) (param i32 i32 i32 i32) (result i32)))
@@ -97,7 +97,7 @@ fn test_poll_oneoff_with_memory_export_that_isnt_memory() -> Result<()> {
 )    
     "#;
     common::test_instance_with_bytes(wat.as_bytes(), |invoke_func| {
-        let result: Result<(), anyhow::Error> = invoke_func("", ());
+        let result: Result<(), wasmtime::Error> = invoke_func("", ());
         let error = result.unwrap_err();
         let inner_error = error.source().unwrap();
         let err_message = inner_error.to_string();
