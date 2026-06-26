@@ -18,7 +18,7 @@ pub fn add_determinism_to_wasi_ctx_builder(
     // See https://rust-random.github.io/book/guide-rngs.html#basic-pseudo-random-number-generators-prngs
     // and https://docs.rs/rand_pcg/latest/rand_pcg/struct.Mcg128Xsl64.html for further details.
     const RANDOM_SEED: u64 = 42; // the answer to life, the universe, and everything
-    let random = Box::new(Pcg64Mcg::seed_from_u64(RANDOM_SEED));
+    let random = Pcg64Mcg::seed_from_u64(RANDOM_SEED);
 
     wasi_builder
         .allow_tcp(false)
