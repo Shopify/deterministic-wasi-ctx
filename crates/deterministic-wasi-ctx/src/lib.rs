@@ -1,5 +1,6 @@
 mod clocks;
 mod scheduling;
+mod wasi_abi;
 
 use clocks::{DeterministicMonotonicClock, DeterministicWallClock};
 use rand_core::SeedableRng;
