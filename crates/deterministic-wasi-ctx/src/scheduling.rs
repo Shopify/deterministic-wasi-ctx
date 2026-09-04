@@ -4,7 +4,8 @@ use crate::wasi_abi::{
     Event, EventFdReadwrite, Subscription, ERRNO_SUCCESS, EVENTTYPE_CLOCK, EVENTTYPE_FD_READ,
     EVENTTYPE_FD_WRITE,
 };
-use wasmtime::{format_err, Caller, Linker, Result};
+use anyhow::format_err;
+use wasmtime::{Caller, Linker, Result};
 
 /// Adds implementations for WASI preview 1 `poll_oneoff` and `sched_yield` to
 /// the linker which will return immediately.
