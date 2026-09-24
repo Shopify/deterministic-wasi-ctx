@@ -2,7 +2,7 @@
 
 ## About this repo
 
-A Rust crate for creating a [wasmtime-wasi](https://crates.io/crates/wasmtime-wasi) [WASI context](https://docs.rs/wasmtime-wasi/30.0.0/wasmtime_wasi/preview1/struct.WasiP1Ctx.html) implementation that is fully deterministic.
+A Rust crate for creating a [wasmtime-wasi](https://crates.io/crates/wasmtime-wasi) [WASI context](https://docs.rs/wasmtime-wasi/36.0.16/wasmtime_wasi/preview1/struct.WasiP1Ctx.html) implementation that is fully deterministic.
 
 Determinism refers to the property that a provided WASI function will **always** return the same series of results for the same series of invocations. For example, invoking `clock_time_get` against the system clock will always return the same timestamp. Or invoking `random_get` will always return `155` on the first invocation followed by always returning `111` on the second invocation.
 
