@@ -11,7 +11,7 @@ where
 {
     let module_path = Path::new("../../target/wasm32-wasip1/debug").join(module_name);
     let bytes = fs::read(module_path)?;
-    Ok(test_instance_with_bytes(&bytes, testcase)?)
+    test_instance_with_bytes(&bytes, testcase)
 }
 
 pub fn test_instance_with_bytes<Params, Results, F>(
@@ -31,7 +31,7 @@ where
     let wasi = wasi_builder.build_p1();
 
     let mut linker = Linker::new(&engine);
-    wasmtime_wasi::p1::add_to_linker_sync(&mut linker, |s| s)?;
+    wasmtime_wasi::preview1::add_to_linker_sync(&mut linker, |s| s)?;
     deterministic_wasi_ctx::replace_scheduling_functions(&mut linker)?;
 
     let mut store = Store::new(&engine, wasi);
